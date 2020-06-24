@@ -2,7 +2,8 @@ let mongoose = require('mongoose');
 
 let problem = mongoose.Schema({
     desc: {
-        type: String
+        type: String,
+        default: ""
     },
     ans: {
         type: Boolean,

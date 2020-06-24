@@ -9,7 +9,8 @@ block content
     p tasks: 
 
     each task, i in contest.tasks
-        h3  i #{task.name}
+        h3  #{i + 1}. 
+        p   task: #{task.name}
         p   #{task.score}
         block btn
         p   A: #{task.A.desc}

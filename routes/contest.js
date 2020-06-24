@@ -6,7 +6,6 @@ let Contest = require("../public/tasks.js");
 let ObjectId = require('mongodb').ObjectId;
 
 const { renderFile } = require("pug");
-const { isValidObjectId } = require("mongoose");
 
 router.get('/', function(req, res) {
     Contest.find({}, function(err, contests) {
@@ -50,9 +49,7 @@ router.post('/add', function(req, res) {
 });
 
 router.get('/add/tasks/:id', function(req, res) {
-    console.log("!req.params:"  + req.params);
-    console.log("ID: " + ObjectId(req.params._id));
-    Contest.findById(ObjectId(req.params._id), function(err, contest) {
+    Contest.findById(ObjectId(req.params.id), function(err, contest) {
         if (err) {
             return console.log(err);
         }
@@ -67,39 +64,61 @@ router.get('/add/tasks/:id', function(req, res) {
     });
 });
 router.post('/add/tasks/:id', function(req, res) {
-    Contest.findById(req.params._id, function(err, contest) {
+    Contest.findById(ObjectId(req.params.id), function(err, contest) {
         if (err) {
             return console.log(err);
         }
         if (contest.tasks == undefined) {
             contest.tasks = [];
         }
+        console.log(req.body);
+
         let task = {
-            name: req.params.name,
-            score: req.params.score,
+            name : req.body.name,
+            score : req.body.score,
             A: {
-                desc: req.params.A_desc,
-                ans:  req.params.A_ans
+                desc: req.body.A_desc,
+                ans:  req.body.A_ans
             },
             B: {
-                desc: req.params.B_desc,
-                ans:  req.params.B_ans
+                desc: req.body.B_desc,
+                ans:  req.body.B_ans
             },
             C: {
-                desc: req.params.C_desc,
-                ans:  req.params.C_ans
+                desc: req.body.C_desc,
+                ans:  req.body.C_ans
             },
             D: {
-                desc: req.params.D_desc,
-                ans:  req.params.D_ans
+                desc: req.body.D_desc,
+                ans:  req.body.D_ans
             },
         };
+
+
+        if (req.body.A_ans && req.body.A_ans == "on") {
+            task.A.ans = true;
+        }
+        else task.B.ans = false;
+        if (req.body.B_ans && req.body.B_ans == "on") {
+            task.B.ans = true;
+        }
+        else task.C.ans = false;
+        if (req.body.C_ans && req.body.C_ans == "on") {
+            task.C.ans = true;
+        }
+        else task.C.ans = false;
+        if (req.body.D_ans && req.body.C_ans == "on") {
+            task.D.ans = true;
+        }
+        else task.D.ans = false;
+
+        console.log(task);
         contest.tasks.push(task);
-        cantest.save(function(err) {
+        contest.save(function(err) {
             if (err) {
                 return console.log('!' + err);
             }
-            res.redirect('/');
+            res.redirect('/contest/add/tasks/' + req.params.id);
         });
     });
 

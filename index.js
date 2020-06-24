@@ -19,13 +19,10 @@ db.on('error', function(err) {
 
 // Init App
 const app = express();
-
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-
 app.use(bodyParser.urlencoded({extended: false}))
-
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 
