@@ -1,0 +1,15 @@
+extends layout 
+
+block content
+   hr
+   form(method='POST', action='/contest/add')
+        #form-group
+           label Title:
+           input.form-control(name='title', type='text') 
+        #form-group
+           label Teacher:
+           input.form-control(name='teacher', type='text') 
+        #form-group
+           label Class:
+           input.form-control(name='class', type='text') 
+        input.btn.btn-primary(type='submit', value='Submit')

@@ -1,0 +1,24 @@
+extends layout
+
+block content
+    h1  #{contest.title}
+    p teacher: #{contest.teacher} 
+    p class: #{contest.class}
+    p score: #{contest.score}
+
+    p tasks: 
+
+    each task, i in contest.tasks
+        h3  i #{task.name}
+        p   #{task.score}
+        block btn
+        p   A: #{task.A.desc}
+        block btn
+        p   B: #{task.B.desc}
+        block btn
+        p   C: #{task.C.desc}
+        block btn
+        p   D: #{task.D.desc}
+    
+    block  update
+    

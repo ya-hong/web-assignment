@@ -10,8 +10,8 @@ let problem = mongoose.Schema({
     }
 })
 
-let task = mongoose.Schema({
-    task: {
+let Task = mongoose.Schema({
+    name: {
         type: String,
         required: true
     },
@@ -21,19 +21,19 @@ let task = mongoose.Schema({
     },
     A: {
         type: problem,
-        required: true
+        required: false 
     },
     B: {
         type: problem,
-        required: true
+        required: false 
     },
     C: {
         type: problem,
-        required: true
+        required: false
     },
     D: {
         type: problem,
-        required: true
+        required: false
     },
 })
 
@@ -51,7 +51,10 @@ let tasks = mongoose.Schema({
         required: true
     },
     tasks: {
-        type: [task],
+        type: [Task],
+        default: [],
         required: true
     }
 })
+
+let contest = module.exports = mongoose.model('tasks', tasks); 
