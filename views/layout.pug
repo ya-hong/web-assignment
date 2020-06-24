@@ -23,10 +23,17 @@ html
                                 | WEB-ASSIGNMENT
                                 span.sr-only (current)
                         li.nav-item
-                            a.nav-link(href="/contest")
-                                | Contest 
-                            ul.nav.flex-column
-                                block contest-nav
+                            a.nav-link(href="/")
+                                | Home
+                        block home-nav
+                        block contest-nav
+                    hr
+                    if user != undefined
+                        p welcome #{user.name}, you are a #{user.type}
+                    else 
+                        p who you are ?
+                        
+
             
             main.col-md-9.ml-sm-auto.col-lg-10.px-md-4
                 br

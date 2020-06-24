@@ -1,8 +1,8 @@
 extends contest-layout 
 
 block content
-   hr
-   form(method='POST', action='/contest/add')
+    hr
+    form(method='POST', action='/contest/add')
         #form-group
            label Title:
            input.form-control(name='title', type='text') 
@@ -12,4 +12,5 @@ block content
         #form-group
            label Class:
            input.form-control(name='class', type='text') 
+        br
         input.btn.btn-primary(type='submit', value='Submit')

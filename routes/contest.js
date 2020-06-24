@@ -22,6 +22,7 @@ router.get('/', function(req, res) {
 
         res.render('contest', {
             title: 'Contests',
+            user: req.session.user,
             contests: contests
         });
     });
@@ -29,7 +30,8 @@ router.get('/', function(req, res) {
 
 router.get('/add', function(req, res) {
     res.render('contest-add', {
-        title: 'create new Contest'
+        title: 'create new Contest',
+        user: req.session.user
     });
 });
 
@@ -59,6 +61,7 @@ router.get('/add/tasks/:id', function(req, res) {
         }
         res.render('contest-add-tasks', {
             title: "add Tasks", 
+            user: req.session.user,
             contest: contest
         });
     });
@@ -135,7 +138,9 @@ router.get('/tasks/:id', function(req, res) {
         });
 
         res.render('contest-tasks', {
-            contest: contest
+            title: "Contest Tasks",
+            contest: contest,
+            user: req.session.user
         });
     });
 })
