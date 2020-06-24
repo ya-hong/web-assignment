@@ -1,0 +1,48 @@
+extends layout
+
+block file-nav
+    li.nav-item
+        a.nav-link(href="/file")
+            |File
+
+block content
+    h3 选择下载文件：
+    if dirs.length + files.length > 0
+        ul.list-group
+            each dir, i in dirs
+                li.list-group-item
+                    a(href = "/file/" + prepath + "/" + dir.url) 
+                        |#{dir.name}/
+        ul.list-group
+            each file, i in files 
+                li.list-group-item
+                    a(href = "/file/download/" + prepath + "/" + file.url) 
+                        |#{file.name}
+    
+    hr
+
+    h4  在此目录下上传文件
+    form(
+        method='POST', 
+        action = "/file/upload/" + prepath,  
+        enctype='multipart/form-data', 
+        onsubmit="return checkTask(this)"
+    )
+        #form-group
+            label 上传文档
+            input.form-control(name="resource", id="resource", type="file")
+        br
+        input.btn.btn-primary(type='submit', value='上传')
+        
+    hr
+
+    h4  创建文件夹
+    form(
+        method='POST',
+        action="/file/mkdir/" + prepath,
+    )
+        #form-group
+            label 输入要创建的文件夹名称
+            input.form-control(name="dirname", type="dirname")
+        br
+        input.btn.btn-primary(type="submit", value="创建")

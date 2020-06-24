@@ -23,6 +23,7 @@ db.on('error', function(err) {
 const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.json()); // 使用bodyparder中间件，
@@ -135,10 +136,12 @@ app.post('/signup', function(req, res) {
 
 // Contest
 let contest = require("./routes/contest.js");
-const user = require("./public/user.js");
 app.use('/contest', contest);
 
 
+// File
+let file = require("./routes/file.js");
+app.use('/file', file);
 
 // Listen
 app.listen(4000, function() {
