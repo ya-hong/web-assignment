@@ -1,11 +1,12 @@
-extends layout
+extends contest-layout
 
 block content
-    h1  #{title}
-    ul 
+    ul.list-group 
         each contest, i in contests
-            li 
-                h3 #{contest.title}
-                p teacher: #{contest.teacher} 
-                p class: #{contest.class}
-                p score: #{contest.score}
+            li.list-group-item 
+                a(href="/contest/tasks/" + contest._id)
+                    h3 #{contest.title}
+                p   
+                |   teacher: #{contest.teacher},
+                |   score: #{contest.score}
+                |   题目类型: #{contest.class},

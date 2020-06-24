@@ -98,15 +98,18 @@ router.post('/add/tasks/:id', function(req, res) {
         if (req.body.A_ans && req.body.A_ans == "on") {
             task.A.ans = true;
         }
-        else task.B.ans = false;
+        else task.A.ans = false;
+
         if (req.body.B_ans && req.body.B_ans == "on") {
             task.B.ans = true;
         }
-        else task.C.ans = false;
+        else task.B.ans = false;
+
         if (req.body.C_ans && req.body.C_ans == "on") {
             task.C.ans = true;
         }
         else task.C.ans = false;
+
         if (req.body.D_ans && req.body.C_ans == "on") {
             task.D.ans = true;
         }
@@ -123,5 +126,18 @@ router.post('/add/tasks/:id', function(req, res) {
     });
 
 });
+
+router.get('/tasks/:id', function(req, res) {
+    Contest.findById(ObjectId(req.params.id), function(err, contest) {
+        contest.score = 0;
+        contest.tasks.forEach(function(task) {
+            contest.score += task.score;
+        });
+
+        res.render('contest-tasks', {
+            contest: contest
+        });
+    });
+})
 
 module.exports = router;

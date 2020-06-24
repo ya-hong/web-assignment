@@ -1,0 +1,9 @@
+.form-control {
+    width: 50%;
+}
+#form-control-checkbox {
+    width: 20px;
+    vertical-align: middle;
+    display: inline-block;
+    margin-left: 10px;
+}

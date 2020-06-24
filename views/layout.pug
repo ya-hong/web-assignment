@@ -6,10 +6,36 @@ html
             rel='stylesheet'
             href='/bower/bootstrap/dist/css/bootstrap.css'
         )
+        link(
+            rel='stylesheet'
+            href='/custom.css'
+        )
     body
-        h1 #{title}
-        block content
-        br
-        hr
+html
+    body
+        .container-fluid.row
+
+            nav#sidebarMenu.col-md-3.col-lg-2.d-md-block.bg-light.sidebar.collapse
+                .sidebar-sticky.pt-3
+                    ul.nav.flex-column
+                        li.nav-item
+                            .nav-link.active(href="#")
+                                | WEB-ASSIGNMENT
+                                span.sr-only (current)
+                        li.nav-item
+                            a.nav-link(href="/contest")
+                                | Contest 
+                            ul.nav.flex-column
+                                block contest-nav
+            
+            main.col-md-9.ml-sm-auto.col-lg-10.px-md-4
+                br
+                h2 #{title}
+                hr
+                br
+                block content
+                br
+
         footer
+            hr
             p web 期末大作业
