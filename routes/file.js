@@ -74,13 +74,17 @@ router.get('/*', function(req, res, next) {
     // 显示服务器文件 
     // 文件目录
     var pth = encodeURI(req.params[0]);
-    
     pth = path.join(pth);
+
+    while (pth[pth.length-1] == '/') {
+        pth = pth.substr(0, pth.length - 1);
+    }
+
     var filePath = path.join(basepath, pth);
 
-    // console.log("pth:" + pth);
-    // console.log("basepath:" + basepath);
-    // console.log("filePath: " + filePath);
+    console.log("pth:" + pth);
+    console.log("basepath:" + basepath);
+    console.log("filePath: " + filePath);
 
     fs.readdir(filePath, function(err, results){
         if(err) {
