@@ -1,11 +1,11 @@
 const express = require("express");
 const path = require('path'); 
-const filesys = require("../public/filesys.js");
+const filesys = require("../filesys.js");
 const fs = require('fs');
 const formidable = require('formidable');
 const router= express.Router();
 
-const Picture = require('../public/picture.js');
+const Picture = require('../DBcollection/picture.js');
 
 const basepath = path.join(__dirname, "./..", "public", "pictures");
 
@@ -77,6 +77,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/:picture', function(req, res) {
+    var fileName = req.params.picture;
 
 
 });

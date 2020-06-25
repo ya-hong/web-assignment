@@ -45,7 +45,7 @@ var checker = function(req, res, callback) {
 
 // Main page
 
-let User = require("./public/user.js");
+let User = require("./DBcollection/user.js");
 
 app.get('/', function(req, res) {
 

@@ -1,6 +1,6 @@
 const express = require("express");
 const path = require('path');
-const filesys = require("../public/filesys.js");
+const filesys = require("../filesys.js");
 const fs = require('fs');
 
 

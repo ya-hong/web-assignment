@@ -2,10 +2,9 @@ const express = require("express");
 
 const router= express.Router();
 
-let Contest = require("../public/tasks.js");
+let Contest = require("../DBcollection/tasks.js");
 let ObjectId = require('mongodb').ObjectId;
 
-const { renderFile } = require("pug");
 
 router.get('/', function(req, res) {
     Contest.find({}, function(err, contests) {
