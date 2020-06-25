@@ -1,0 +1,39 @@
+extends layout
+
+block subtitle
+    p   图片管理界面，在此处上传下载图片
+
+block page-nav
+    li.nav-item
+        a.nav-link(href="/picture")
+            |Picture
+
+block content
+    h3 选择图片：
+    if dirs.length > 0
+        ul.list-group
+            each dir, i in dirs
+                li.list-group-item
+                    a(href = "/pictures/" + dir.url + "/" + dir.url) 
+                        |#{dir.name}              
+                    |&nbsp &nbsp
+                    a(href = "/pictures/" + dir.url + "/EDIT" + dir.url) 
+                        |#{dir.name}(Edited)
+                    |&nbsp &nbsp &nbsp &nbsp
+                    form(action = "/picture/" + dir.url)
+                        input.btn.btn.btn-primary(type = "submit", value="Edit")
+    
+    hr
+
+    h4 上传图片 
+    form(
+        method='POST', 
+        action = "/picture/upload/",  
+        enctype='multipart/form-data', 
+        onsubmit="return checkTask(this)"
+    )
+        #form-group
+            label 上传文档
+            input.form-control(name="resource", id="resource", type="file")
+        br
+        input.btn.btn-primary(type='submit', value='上传')

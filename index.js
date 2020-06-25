@@ -143,6 +143,11 @@ app.use('/contest', contest);
 let file = require("./routes/file.js");
 app.use('/file', file);
 
+
+// Picture
+let picture = require("./routes/picture.js");
+app.use('/picture', picture);
+
 // Listen
 app.listen(4000, function() {
     console.log("listen in port 4000");

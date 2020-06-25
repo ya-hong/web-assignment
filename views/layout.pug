@@ -24,10 +24,9 @@ html
                                 span.sr-only (current)
                         li.nav-item
                             a.nav-link(href="/")
-                                | Home
-                        block home-nav
-                        block contest-nav
-                        block file-nav
+                                h4 Home
+                        hr
+                        block page-nav
                     hr
                     if user != undefined
                         p welcome #{user.name}, you are a #{user.type}
@@ -39,6 +38,8 @@ html
             main.col-md-9.ml-sm-auto.col-lg-10.px-md-4
                 br
                 h2 #{title}
+                p
+                    block subtitle
                 hr
                 br
                 block content
