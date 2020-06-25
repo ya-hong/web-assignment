@@ -27,27 +27,32 @@ var download = function(filePath, res, callback) {
     }
 };
 
-var upload = function(filePath, req, callback) {
+var upload = function(filePath, req, fileName, callback) {
     var form = new formidable.IncomingForm();   //创建上传表单
     form.encoding = 'utf-8';        //设置编辑
     form.uploadDir = filePath;     //设置上传目录
     form.keepExtensions = true;     //保留后缀
     form.maxFieldsSize = 2 * 1024 * 1024;   //文件大小
-  
+
     form.parse(req, function(err, fields, files) {
         if (err) {
-            return callback(err);
+            return console.log(err);
         }
-        var filename = encodeURI(files.resource.name);
-        var newPath = path.join(form.uploadDir , filename);
-        var prefix = 0;
-        while (fs.existsSync(newPath)) {
-            filename = encodeURI(prefix + files.resource.name);
-            newPath = path.join(form.uploadDir, filename);
-            prefix++;
+
+        if (fileName != undefined) {
+            fs.renameSync(files.resource.path, path.join(filePath, fileName));
+            if (callback) callback(err);
         }
-        fs.renameSync(files.resource.path, newPath);
-        callback();
+        else {
+            fileName = files.resource.name;
+            var prefix = 0;
+            while (fs.existsSync(path.join(filePath, fileName))) {
+                fileName = prefix + files.resource.name;
+                prefix++;
+            }
+            fs.renameSync(files.resource.path, path.join(filePath, fileName));
+            if (callback) callback(err);
+        }
     });
 }
 

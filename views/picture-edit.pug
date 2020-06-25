@@ -1,0 +1,70 @@
+extends picture-layout
+
+block content
+    .container#canvas-container(
+        width = "100%"
+    )
+        canvas#drawing-board(
+            imgPath=filePath,
+            imgName=fileName,
+            width= "1200px",
+            height= "500px"
+        )
+
+        br
+
+        input(type="color", id="color")
+        |&nbsp;&nbsp;
+        input.range(
+            type="range", 
+            id="penrange", 
+            min="1",
+            max="15",
+            value="3"
+        )
+
+        br
+        br
+
+        input.btn-primary(
+            type="button",
+            id="eraser",
+            value="橡皮擦"
+        )
+        |&nbsp;&nbsp;
+        input.range(
+            type="range",
+            id="eraserrange",
+            min="5",
+            max="50",
+            value="10"
+        )
+
+        br
+        br
+
+        input.btn.btn-primary(
+            type="button",
+            id="clear",
+            value="清空"
+        )
+
+        br
+        br
+
+        input.btn.btn-primary(
+            type="button",
+            id="clearAll",
+            value="清除历史画迹"
+        )
+
+        br
+        br
+
+        input.btn.btn-primary(
+            type="button",
+            id="save",
+            value="保存"
+        )
+
+        script(src="/js/canvas.js")

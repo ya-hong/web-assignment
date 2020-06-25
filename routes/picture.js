@@ -22,16 +22,16 @@ router.post('/upload', function(req, res, callback){
         if (err) {
             return console.log(err);
         }
-        fileName = encodeURI(files.resource.name);
+        fileName = files.resource.name;
         var newPath = path.join(form.uploadDir , fileName);
         var prefix = 0;
         while (fs.existsSync(newPath)) {
-            fileName = encodeURI(prefix + files.resource.name);
+            fileName = prefix + files.resource.name;
             newPath = path.join(form.uploadDir, fileName);
             prefix++;
         }
 
-        console.log("fileName: " + decodeURI(fileName));
+        console.log("fileName: " + fileName);
 
         var fileNamep = "EDIT" + fileName;
 
@@ -41,7 +41,7 @@ router.post('/upload', function(req, res, callback){
 
         Picture.find({name: fileName}, function(err, find) {
             if (find.length) {
-                res.end("some thing worng");
+                return res.end("some thing worng");
             }
             picture.save(function(err) {
                 if (err) return console.log(err);
@@ -55,6 +55,26 @@ router.post('/upload', function(req, res, callback){
     });
 });
 
+router.post('/edit/:picture', function(req, res) {
+    // console.log(req.body);
+    var fileName = req.params.picture;
+    var filePath = path.join(basepath, fileName);
+    filesys.upload(filePath, req, "EDIT" + fileName);
+})
+
+router.get('/:picture', function(req, res) {
+    var fileName = req.params.picture;
+    var filePath = path.join("/pictures", fileName);
+
+    res.render("picture-edit", {
+        title: "Edit picture",
+        
+        filePath: filePath,
+        fileName: fileName,
+        user: req.session.user
+    })
+});
+
 router.get('/', function(req, res, next) {
     // 显示服务器文件 
     // 文件目录
@@ -65,7 +85,7 @@ router.get('/', function(req, res, next) {
         var dirs = [];
         results.forEach(function(dir){
             if(fs.statSync(path.join(basepath, dir)).isDirectory()){
-                dirs.push({ name: decodeURI(dir), url: encodeURI(dir)});
+                dirs.push(dir);
             }
         });
         res.render('picture', {
@@ -74,12 +94,6 @@ router.get('/', function(req, res, next) {
             user: req.session.user
         });
     });
-});
-
-router.get('/:picture', function(req, res) {
-    var fileName = req.params.picture;
-
-
 });
 
 module.exports = router;

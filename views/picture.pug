@@ -1,12 +1,4 @@
-extends layout
-
-block subtitle
-    p   图片管理界面，在此处上传下载图片
-
-block page-nav
-    li.nav-item
-        a.nav-link(href="/picture")
-            |Picture
+extends picture-layout
 
 block content
     h3 选择图片：
@@ -14,13 +6,13 @@ block content
         ul.list-group
             each dir, i in dirs
                 li.list-group-item
-                    a(href = "/pictures/" + dir.url + "/" + dir.url) 
-                        |#{dir.name}              
-                    |&nbsp &nbsp
-                    a(href = "/pictures/" + dir.url + "/EDIT" + dir.url) 
-                        |#{dir.name}(Edited)
-                    |&nbsp &nbsp &nbsp &nbsp
-                    form(action = "/picture/" + dir.url)
+                    a(href = "/pictures/" + dir + "/" + dir) 
+                        |#{dir}              
+                    |&nbsp; &nbsp;
+                    a(href = "/pictures/" + dir + "/EDIT" + dir) 
+                        |#{dir}(Edited)
+                    |&nbsp; &nbsp; &nbsp; &nbsp;
+                    form(action = "/picture/" + dir)
                         input.btn.btn.btn-primary(type = "submit", value="Edit")
     
     hr

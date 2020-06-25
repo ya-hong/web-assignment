@@ -8,18 +8,20 @@ const router= express.Router();
 
 const basepath = path.join(__dirname, "./..", "public", "resource");
 
-router.post('/upload/*', function(req, res, next){
-    var prepath = path.join(encodeURI(req.params[0]));
-    var filePath = path.join(basepath, prepath);
-    filesys.upload(filePath, req, function(err) {
+router.post('/upload/*', function(req, res){
+    var prePath = req.params[0];
+    console.log(prePath);
+    var filePath = path.join(basepath, prePath);
+    console.log(filePath);
+    filesys.upload(filePath, req, undefined, function(err) {
         if (err) {
             return console.log(err);
         }
-        res.redirect('/file/' + prepath);
+        res.redirect('/file/' + prePath);
     });
 });
 
-router.get('/download/*', function(req, res, next) {
+router.get('/download/*', function(req, res) {
     var fileName = req.params[0];
     fileName = encodeURI(fileName);
     var filePath = path.join(basepath, fileName);
