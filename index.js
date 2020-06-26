@@ -89,9 +89,7 @@ ws.on('connection', function(ws) {
             });
         }
         else {
-            var danmu = JSON.parse(msg);
-            console.log(danmu);
-            picture.danmu.push(danmu);
+            picture.danmu.push(msg);
             picture.save();
         }
     });

@@ -5,17 +5,23 @@ const router= express.Router();
 
 const Picture = require('../DBcollection/picture.js');
 
-const basepath = path.join(__dirname, "./..", "public", "pictures");
+const basepath = path.join(__dirname, "../public/pictures");
 
 
 router.get('/:picture', function(req, res) {
     var fileName = req.params.picture;
 
-    res.render("danmu-picture", {
-        title: "正在播放弹幕……",
-        fileName: fileName,
-        user: req.session.user
+    Picture.findOne({name: fileName}, function(err, find) {
+        if (!find) return res.end("some thing wrong");
+        res.render("danmu-picture", {
+            title: "正在播放弹幕……",
+            fileName: fileName,
+            danmu: find.danmu,
+            filePath: path.join("/pictures", fileName, "EDIT" + fileName),
+            user: req.session.user
+        })
     })
+
 });
 
 router.get('/', function(req, res) {

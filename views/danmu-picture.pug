@@ -3,6 +3,13 @@ extends danmu-layout
 block content
     p#pictureName(_name = fileName)
 
+    canvas#canvas(
+        style="position: absolute;",
+    )
+    img#img(src= filePath, width = "90%")
+
+    hr 
+
     label 输入弹幕:
     |&nbsp;&nbsp;&nbsp;
     input#danmu-input(name = "danmu", type = "text")
@@ -10,3 +17,13 @@ block content
     input#danmu-button.btn.btn-primary(type = "submit", value = "发送")
 
     p (发送的弹幕需要刷新后才能看到)
+
+    hr
+
+    ul.list-group.list-group-flush
+        each content, i in danmu
+            li.list-group-item
+                p #{content}
+
+
+    script(src="/js/danmu-ws.js")
