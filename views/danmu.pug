@@ -1,0 +1,9 @@
+extends danmu-layout
+
+block content
+    h3 选择图片进行弹幕播放：
+    if dirs.length > 0
+        ul.list-group
+            each dir, i in dirs
+                li.list-group-item
+                    a(href = "/danmu/" + dir) #{dir}

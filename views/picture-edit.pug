@@ -1,5 +1,9 @@
 extends picture-layout
 
+block script
+    script(src="/js/canvas.js")
+
+
 block content
     .container#canvas-container(
         width = "100%"
@@ -66,5 +70,3 @@ block content
             id="save",
             value="保存"
         )
-
-        script(src="/js/canvas.js")

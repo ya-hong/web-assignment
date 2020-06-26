@@ -14,7 +14,6 @@ let db = mongoose.connection;
 db.once('open', function() {
     console.log("Connected to mongoDB")
 })
-
 db.on('error', function(err) {
     console.log(err);
 });
@@ -43,97 +42,6 @@ var checker = function(req, res, callback) {
     callback(req, res);
 }
 
-// Main page
-
-let User = require("./DBcollection/user.js");
-
-app.get('/', function(req, res) {
-
-    req.session.user = {
-        name: "root", 
-        password: "root", 
-        type: "teacher"
-    };
-
-    if (req.session.user) {
-        res.render('home', {
-            user: req.session.user,
-            title: 'HOME',
-        });
-    }
-    else {
-        res.render('home-signin', {
-            user: req.session.user,
-            title: "user Sign in",
-        });
-    }
-});
-
-app.post('/', function(req, res) {
-    let query = {
-        name: req.body.name,
-        password: req.body.password
-    };
-    User.findOne(query, function(err, user) {
-        if (err) {
-            res.end("some thing wrong")
-            return console.log(err);
-        }
-        if (user != undefined) {
-            req.session.user = user;
-            return res.render('home', {
-                title: "HOME",
-                user: req.session.user
-            });
-        }
-        else {
-            return res.render('home-signin', {
-                title: "Sorry, no this user",
-                user: req.session.user
-            })
-        }
-    });
-});
-
-app.get('/signup', function(req, res) {
-    res.render('home-signup', {
-        user: req.session.user,
-        title: "user Sign up",
-    });
-});
-app.post('/signup', function(req, res) {
-    User.find({name: req.body.name}, function(err, find) {
-        if (find.length) {
-            console.log(find);
-            res.render("home-signup", {
-                user: req.session.user,
-                title: "Same User Name - plz try again",
-            });
-        }
-        else {
-            let user = new User();
-            user.name = req.body.name;
-            user.password = req.body.password;
-            if (req.body.type && req.body.type == 'on') {
-                user.type = "teacher";
-            }
-            else {
-                user.type = "student";
-            }
-            user.save(function(err) {
-                if (err) {
-                    res.end("some thing wrong");
-                    return console.log(err);
-                }
-                req.session.user = user;
-                res.redirect('/');
-            });
-        }
-    });
-});
-
-
-
 // Contest
 let contest = require("./routes/contest.js");
 app.use('/contest', contest);
@@ -148,7 +56,43 @@ app.use('/file', file);
 let picture = require("./routes/picture.js");
 app.use('/picture', picture);
 
+
+// Danmu
+let danmu = require("./routes/danmu.js");
+app.use('/danmu', danmu);
+
+
+// Main page
+let home = require("./routes/home.js");
+app.use("/", home);
+
+
 // Listen
-app.listen(4000, function() {
+const server = app.listen(4000, function() {
     console.log("listen in port 4000");
+});
+
+const SocketServer = require('ws').Server;
+const ws =  new SocketServer({server});
+
+const Picture = require("./DBcollection/picture.js");
+
+ws.on('connection', function(ws) {
+    var picture;
+    ws.on('message', function(msg) {
+        if (picture == undefined) {
+            Picture.findOne({name: msg}, function(err, find) {
+                if (err) return console.log(err);
+                if (find == null) return console.log("ws err");
+                picture = find;
+                ws.send(JSON.stringify(picture.danmu));
+            });
+        }
+        else {
+            var danmu = JSON.parse(msg);
+            console.log(danmu);
+            picture.danmu.push(danmu);
+            picture.save();
+        }
+    });
 });

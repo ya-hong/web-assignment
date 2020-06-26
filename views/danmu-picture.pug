@@ -1,0 +1,12 @@
+extends danmu-layout
+
+block content
+    p#pictureName(_name = fileName)
+
+    label 输入弹幕:
+    |&nbsp;&nbsp;&nbsp;
+    input#danmu-input(name = "danmu", type = "text")
+    |&nbsp;&nbsp;&nbsp;
+    input#danmu-button.btn.btn-primary(type = "submit", value = "发送")
+
+    p (发送的弹幕需要刷新后才能看到)
