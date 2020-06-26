@@ -8,13 +8,24 @@ block content
 
     p tasks: 
 
-    ul.list-group
-        each task, i in contest.tasks
-            li.list-group-item
-                h3  #{i + 1}. 
-                p   task: #{task.name} (#{task.score} pts)
-                p   A: #{task.A.desc}
-                p   B: #{task.B.desc}
-                p   C: #{task.C.desc}
-                p   D: #{task.D.desc}
-    
+    form(action="", method="post")
+        ul.list-group
+            each task, i in contest.tasks
+                li.list-group-item
+                    h3  #{i + 1}. 
+                    p   task: #{task.name} (#{task.score} pts)
+
+                    input(type="checkbox", name= i + "A")
+                    |&nbsp; A: #{task.A.desc}
+                    br
+                    input(type="checkbox", name= i + "B")
+                    |&nbsp; B: #{task.B.desc}
+                    br
+                    input(type="checkbox", name= i + "C")
+                    |&nbsp; C: #{task.C.desc}
+                    br
+                    input(type="checkbox", name= i + "D")
+                    |&nbsp; D: #{task.D.desc}
+
+        br
+        input.btn.btn-primary(type="submit", value="提交答案")

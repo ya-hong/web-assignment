@@ -4,24 +4,23 @@ const router= express.Router();
 let User = require("../DBcollection/user.js");
 
 router.get('/', function(req, res) {
-    req.session.user = {
-        name: "root", 
-        password: "root", 
-        type: "teacher"
-    };
+    // User.findOne({"name": "test"}, function(err, find) {
+    //     req.session.user = find;
 
-    if (req.session.user) {
-        res.render('home', {
-            user: req.session.user,
-            title: 'HOME',
-        });
-    }
-    else {
-        res.render('home-signin', {
-            user: req.session.user,
-            title: "user Sign in",
-        });
-    }
+        if (req.session.user) {
+            res.render('home', {
+                user: req.session.user,
+                title: 'HOME',
+            });
+        }
+        else {
+            res.render('home-signin', {
+                user: req.session.user,
+                title: "user Sign in",
+            });
+        }
+    // });
+
 });
 
 router.post('/', function(req, res) {
@@ -68,8 +67,11 @@ router.post('/signup', function(req, res) {
         }
         else {
             let user = new User();
+
+            console.log(user);
             user.name = req.body.name;
             user.password = req.body.password;
+
             if (req.body.type && req.body.type == 'on') {
                 user.type = "teacher";
             }

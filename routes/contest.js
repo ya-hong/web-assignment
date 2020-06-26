@@ -5,6 +5,7 @@ const router= express.Router();
 let Contest = require("../DBcollection/tasks.js");
 let ObjectId = require('mongodb').ObjectId;
 
+let User = require("../DBcollection/user.js");
 
 router.get('/', function(req, res) {
     Contest.find({}, function(err, contests) {
@@ -130,18 +131,66 @@ router.post('/add/tasks/:id', function(req, res) {
 });
 
 router.get('/tasks/:id', function(req, res) {
+    // console.log(req.session.user);
+    var user = req.session.user;
     Contest.findById(ObjectId(req.params.id), function(err, contest) {
         contest.score = 0;
         contest.tasks.forEach(function(task) {
             contest.score += task.score;
         });
 
-        res.render('contest-tasks', {
-            title: "Contest Tasks",
-            contest: contest,
-            user: req.session.user
-        });
+        // if (user.scores[req.params.id] != undefined) {
+        //     res.render('contest-tasks-finish', {
+        //         title: "Contest Tasks",
+        //         contest: contest,
+        //         user: req.session.user,
+        //         id: req.params.id
+        //     });
+        // }
+        {
+            res.render('contest-tasks', {
+                title: "Contest Tasks",
+                contest: contest,
+                user: req.session.user,
+                id: req.params.id
+            });
+        }
     });
-})
+});
+
+router.post('/tasks/:id', function(req, res) {
+    var id = req.params.id;
+    Contest.findById(ObjectId(id), function(err, contest) {
+        User.findById(ObjectId(req.session.user._id), function(err, user) {
+            var score = 0;
+            user.contests[id] = [];
+            for (var i = 0; i < contest.tasks.length; ++i) {
+                user.contests[id][i] = {
+                    A: Boolean,
+                    B: Boolean,
+                    C: Boolean,
+                    D: Boolean
+                };
+                user.contests[id][i].A = req.body[i + 'A'] == 'on';
+                user.contests[id][i].B = req.body[i + 'B'] == 'on';
+                user.contests[id][i].C = req.body[i + 'C'] == 'on';
+                user.contests[id][i].D = req.body[i + 'D'] == 'on';
+
+                if (
+                        user.contests[id][i].A == contest.tasks[i].A.ans&
+                        user.contests[id][i].B == contest.tasks[i].B.ans&
+                        user.contests[id][i].C == contest.tasks[i].C.ans&
+                        user.contests[id][i].D == contest.tasks[i].D.ans
+                ) {
+                    score += contest.tasks[i].score;
+                }
+            }
+            console.log(user);
+            user.save(function(err) {
+                res.redirect('/contest/tasks/' + id);
+            })
+        })
+    })
+});
 
 module.exports = router;
