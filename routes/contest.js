@@ -3,9 +3,11 @@ const express = require("express");
 const router= express.Router();
 
 let Contest = require("../DBcollection/tasks.js");
+let User = require("../DBcollection/user.js");
+let Score = require("../DBcollection/score.js");
+
 let ObjectId = require('mongodb').ObjectId;
 
-let User = require("../DBcollection/user.js");
 
 router.get('/', function(req, res) {
     Contest.find({}, function(err, contests) {
@@ -132,63 +134,117 @@ router.post('/add/tasks/:id', function(req, res) {
 
 router.get('/tasks/:id', function(req, res) {
     // console.log(req.session.user);
-    var user = req.session.user;
+    var userid = req.session.user._id;
     Contest.findById(ObjectId(req.params.id), function(err, contest) {
         contest.score = 0;
         contest.tasks.forEach(function(task) {
             contest.score += task.score;
         });
 
-        // if (user.scores[req.params.id] != undefined) {
-        //     res.render('contest-tasks-finish', {
-        //         title: "Contest Tasks",
-        //         contest: contest,
-        //         user: req.session.user,
-        //         id: req.params.id
-        //     });
-        // }
-        {
-            res.render('contest-tasks', {
-                title: "Contest Tasks",
-                contest: contest,
-                user: req.session.user,
-                id: req.params.id
-            });
-        }
+        Score.findOne({
+            user: userid,
+            contest: req.params.id
+        }, function(err, score) {
+            if (score) {
+                res.render('contest-tasks-finish', {
+                    title: "Contest Tasks (你已完成)",
+                    contest: contest,
+                    user: req.session.user,
+                    id: req.params.id,
+                    score: score.score
+                })
+            }
+            else {
+                res.render('contest-tasks', {
+                    title: "Contest Tasks",
+                    contest: contest,
+                    user: req.session.user,
+                    id: req.params.id
+                });
+            }
+        })
     });
 });
 
 router.post('/tasks/:id', function(req, res) {
-    var id = req.params.id;
-    Contest.findById(ObjectId(id), function(err, contest) {
-        User.findById(ObjectId(req.session.user._id), function(err, user) {
-            var score = 0;
-            user.contests[id] = [];
-            for (var i = 0; i < contest.tasks.length; ++i) {
-                user.contests[id][i] = {
-                    A: Boolean,
-                    B: Boolean,
-                    C: Boolean,
-                    D: Boolean
-                };
-                user.contests[id][i].A = req.body[i + 'A'] == 'on';
-                user.contests[id][i].B = req.body[i + 'B'] == 'on';
-                user.contests[id][i].C = req.body[i + 'C'] == 'on';
-                user.contests[id][i].D = req.body[i + 'D'] == 'on';
+    var contestid = req.params.id, userid = req.session.user._id;
 
-                if (
-                        user.contests[id][i].A == contest.tasks[i].A.ans&
-                        user.contests[id][i].B == contest.tasks[i].B.ans&
-                        user.contests[id][i].C == contest.tasks[i].C.ans&
-                        user.contests[id][i].D == contest.tasks[i].D.ans
-                ) {
-                    score += contest.tasks[i].score;
+    Score.findOne({
+        user: userid,
+        contest: contestid
+    }, function(err, score) {
+        console.log(score);
+        if (score) {
+            res.redirect('/contest');
+        }
+        else {
+            Contest.findById(ObjectId(contestid), function(err, contest) {
+                score = new Score();
+                score.user = userid;
+                score.contest = contestid;
+                score.score = 0;
+                for (var i = 0; i < contest.tasks.length; ++i) {
+                    if (
+                        (req.body[i + 'A'] == 'on') == contest.tasks[i].A.ans &
+                        (req.body[i + 'B'] == 'on') == contest.tasks[i].B.ans &
+                        (req.body[i + 'C'] == 'on') == contest.tasks[i].C.ans &
+                        (req.body[i + 'D'] == 'on') == contest.tasks[i].D.ans
+                    ) {
+                        score.score += contest.tasks[i].score;
+                    }
                 }
-            }
-            console.log(user);
-            user.save(function(err) {
-                res.redirect('/contest/tasks/' + id);
+                score.save(function(err) {
+                    res.redirect('/contest/tasks/' + contestid);
+                })
             })
+        }
+    })
+});
+
+router.get('/chart', function(req, res) {
+    Contest.find({}, function(err, contests) {
+        if (err) {
+            return console.log(err);
+        }
+
+        contests.forEach(function(contest) {
+            contest.score = 0;
+            contest.tasks.forEach(function(task) {
+                contest.score += task.score;
+            });
+        });
+
+        res.render('contest-chart', {
+            title: '查看考试分数分布',
+            user: req.session.user,
+            contests: contests
+        });
+    });
+});
+
+router.get('/chart/:id', function(req, res) {
+    Score.find({contest: req.params.id}, function(err, scores) {
+        Contest.findOne(ObjectId(req.params.id), function(err, contest) {
+            var obj = {};
+            scores.forEach(function(score) {
+                if (obj[score.score]) obj[score.score]++;
+                else obj[score.score] = 1;
+            });
+            console.log(obj);
+            var data = [];
+            for (var name in obj) {
+                data.push({
+                    name: name + "分",
+                    value: obj[name]
+                })
+            }
+            console.log(data);
+            res.render('contest-chart-tasks', {
+                title: '查看考试分数分布',
+                user: req.session.user,
+                contest: contest,
+                data: JSON.stringify(data)
+            });
         })
     })
 });

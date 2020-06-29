@@ -1,0 +1,12 @@
+extends contest-layout
+
+block content
+    ul.list-group 
+        each contest, i in contests
+            li.list-group-item 
+                a(href="/contest/chart/" + contest._id)
+                    h3 #{contest.title}
+                p   
+                |   teacher: #{contest.teacher},
+                |   score: #{contest.score}
+                |   题目类型: #{contest.class},

@@ -16,6 +16,7 @@ let Task = mongoose.Schema({
         type: String,
         required: true
     },
+    sum: Number,
     score: {
         type: Number,
         required: true

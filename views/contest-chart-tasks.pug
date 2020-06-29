@@ -1,0 +1,14 @@
+extends contest-layout
+
+block content
+    h1  #{contest.title}
+    p teacher: #{contest.teacher} 
+    p class: #{contest.class}
+
+    hr
+
+    #chart(
+        scores = data,
+        style = "width: 1000px; height: 800px;"
+    )
+    script(src="/js/Echart.js")
