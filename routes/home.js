@@ -4,22 +4,19 @@ const router= express.Router();
 let User = require("../DBcollection/user.js");
 
 router.get('/', function(req, res) {
-    // User.findOne({"name": "test"}, function(err, find) {
-    //     req.session.user = find;
 
-        if (req.session.user) {
-            res.render('home', {
-                user: req.session.user,
-                title: 'HOME',
-            });
-        }
-        else {
-            res.render('home-signin', {
-                user: req.session.user,
-                title: "user Sign in",
-            });
-        }
-    // });
+    if (req.session.user) {
+        res.render('home', {
+            user: req.session.user,
+            title: 'HOME',
+        });
+    }
+    else {
+        res.render('home-signin', {
+            user: req.session.user,
+            title: "user Sign in",
+        });
+    }
 
 });
 

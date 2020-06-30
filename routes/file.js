@@ -22,6 +22,9 @@ router.post('/upload/*', function(req, res){
 });
 
 router.get('/download/*', function(req, res) {
+    if (req.session.user == undefined) {
+        return res.redirect('/');
+    }
     var fileName = req.params[0];
     fileName = encodeURI(fileName);
     var filePath = path.join(basepath, fileName);
@@ -40,6 +43,10 @@ router.post('/mkdir/*', function(req, res) {
 });
 
 router.get('/*', function(req, res, next) {
+    if (req.session.user == undefined) {
+        return res.redirect('/');
+    }
+
     // 显示服务器文件 
     // 文件目录
     var pth = encodeURI(req.params[0]);

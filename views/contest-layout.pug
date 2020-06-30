@@ -5,11 +5,12 @@ block page-nav
         a.nav-link(href="/contest")
             | Contest 
     li.nav-item
-        a.nav-link(href="/contest/add")
-            | create Contest 
-    li.nav-item
         a.nav-link(href="/contest/chart")
             | Contest Chart
+    if (user.type == 'teacher')
+        li.nav-item
+            a.nav-link(href="/contest/add")
+                | create Contest 
 
 block subtitle 
     |考试界面，您可以举办或者参加考试

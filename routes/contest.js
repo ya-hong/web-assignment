@@ -10,6 +10,10 @@ let ObjectId = require('mongodb').ObjectId;
 
 
 router.get('/', function(req, res) {
+    if (req.session.user == undefined) {
+        return res.redirect('/');
+    }
+
     Contest.find({}, function(err, contests) {
         if (err) {
             return console.log(err);
@@ -31,6 +35,13 @@ router.get('/', function(req, res) {
 });
 
 router.get('/add', function(req, res) {
+    if (req.session.user == undefined) {
+        return res.redirect('/');
+    }
+    if (req.session.user.type != 'teacher') {
+        return res.redirect('/contest');
+    }
+
     res.render('contest-add', {
         title: 'create new Contest',
         user: req.session.user
@@ -40,7 +51,7 @@ router.get('/add', function(req, res) {
 router.post('/add', function(req, res) {
     let contest = new Contest();
     contest.title = req.body.title;
-    contest.teacher= req.body.teacher;
+    contest.teacher= req.session.user.name;
     contest.class = req.body.class;
 
     contest.save(function(err) {
@@ -53,6 +64,13 @@ router.post('/add', function(req, res) {
 });
 
 router.get('/add/tasks/:id', function(req, res) {
+    if (req.session.user == undefined) {
+        return res.redirect('/');
+    }
+    if (req.session.user.type != 'teacher') {
+        return res.redirect('/contest');
+    }
+
     Contest.findById(ObjectId(req.params.id), function(err, contest) {
         if (err) {
             return console.log(err);
@@ -133,7 +151,10 @@ router.post('/add/tasks/:id', function(req, res) {
 });
 
 router.get('/tasks/:id', function(req, res) {
-    // console.log(req.session.user);
+    if (req.session.user == undefined) {
+        return res.redirect('/');
+    }
+
     var userid = req.session.user._id;
     Contest.findById(ObjectId(req.params.id), function(err, contest) {
         contest.score = 0;
@@ -202,6 +223,10 @@ router.post('/tasks/:id', function(req, res) {
 });
 
 router.get('/chart', function(req, res) {
+    if (req.session.user == undefined) {
+        return res.redirect('/');
+    }
+
     Contest.find({}, function(err, contests) {
         if (err) {
             return console.log(err);
@@ -223,6 +248,10 @@ router.get('/chart', function(req, res) {
 });
 
 router.get('/chart/:id', function(req, res) {
+    if (req.session.user == undefined) {
+        return res.redirect('/');
+    }
+
     Score.find({contest: req.params.id}, function(err, scores) {
         Contest.findOne(ObjectId(req.params.id), function(err, contest) {
             var obj = {};

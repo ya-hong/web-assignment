@@ -23,30 +23,31 @@ block content
                     a(href = "/file/download/" + prepath + "/" + file.url) 
                         |#{file.name}
     
-    hr
+    if (user.type == 'teacher')
+        hr
 
-    h4  在此目录下上传文件
-    form(
-        method='POST', 
-        action = "/file/upload/" + prepath,  
-        enctype='multipart/form-data', 
-        onsubmit="return checkTask(this)"
-    )
-        #form-group
-            label 上传文档
-            input.form-control(name="resource", id="resource", type="file")
-        br
-        input.btn.btn-primary(type='submit', value='上传')
+        h4  在此目录下上传文件
+        form(
+            method='POST', 
+            action = "/file/upload/" + prepath,  
+            enctype='multipart/form-data', 
+            onsubmit="return checkTask(this)"
+        )
+            #form-group
+                label 上传文档
+                input.form-control(name="resource", id="resource", type="file")
+            br
+            input.btn.btn-primary(type='submit', value='上传')
         
-    hr
+        hr
 
-    h4  创建文件夹
-    form(
-        method='POST',
-        action="/file/mkdir/" + prepath,
-    )
-        #form-group
-            label 输入要创建的文件夹名称
-            input.form-control(name="dirname", type="dirname")
-        br
-        input.btn.btn-primary(type="submit", value="创建")
+        h4  创建文件夹
+        form(
+            method='POST',
+            action="/file/mkdir/" + prepath,
+        )
+            #form-group
+                label 输入要创建的文件夹名称
+                input.form-control(name="dirname", type="dirname")
+            br
+            input.btn.btn-primary(type="submit", value="创建")

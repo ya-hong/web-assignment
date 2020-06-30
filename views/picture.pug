@@ -12,20 +12,23 @@ block content
                     a(href = "/pictures/" + dir + "/EDIT" + dir) 
                         |#{dir}(Edited)
                     |&nbsp; &nbsp; &nbsp; &nbsp;
-                    form(action = "/picture/" + dir)
-                        input.btn.btn.btn-primary(type = "submit", value="Edit")
-    
-    hr
 
-    h4 上传图片 
-    form(
-        method='POST', 
-        action = "/picture/upload/",  
-        enctype='multipart/form-data', 
-        onsubmit="return checkTask(this)"
-    )
-        #form-group
-            label 上传文档
-            input.form-control(name="resource", id="resource", type="file")
-        br
-        input.btn.btn-primary(type='submit', value='上传')
+                    if (user.type == 'teacher')
+                        form(action = "/picture/" + dir)
+                            input.btn.btn.btn-primary(type = "submit", value="Edit")
+    
+    if (user.type == 'teacher')
+        hr
+
+        h4 上传图片 
+        form(
+            method='POST', 
+            action = "/picture/upload/",  
+            enctype='multipart/form-data', 
+            onsubmit="return checkTask(this)"
+        )
+            #form-group
+                label 上传文档
+                input.form-control(name="resource", id="resource", type="file")
+            br
+            input.btn.btn-primary(type='submit', value='上传')

@@ -63,6 +63,9 @@ router.post('/edit/:picture', function(req, res) {
 })
 
 router.get('/:picture', function(req, res) {
+    if (req.session.user == undefined) {
+        return res.redirect('/');
+    }
     var fileName = req.params.picture;
     var filePath = path.join("/pictures", fileName);
 
@@ -76,6 +79,9 @@ router.get('/:picture', function(req, res) {
 });
 
 router.get('/', function(req, res, next) {
+    if (req.session.user == undefined) {
+        return res.redirect('/');
+    }
     // 显示服务器文件 
     // 文件目录
     fs.readdir(basepath, function(err, results){
