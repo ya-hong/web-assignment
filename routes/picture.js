@@ -46,7 +46,7 @@ router.post('/upload', function(req, res, callback){
         picture.danmu = [];
 
         Picture.find({name: fileName}, function(err, find) {
-            if (find.length) {
+            if (err || find.length) {
                 return res.end("some thing worng");
             }
             picture.save(function(err) {

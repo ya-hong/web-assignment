@@ -11,12 +11,12 @@ let db = mongoose.connection;
 
 // Check DB errors
 
-// db.once('open', function() {
-//     console.log("Connected to mongoDB")
-// })
-// db.on('error', function(err) {
-//     console.log(err);
-// });
+db.once('open', function() {
+    console.log("Connected to mongoDB")
+})
+db.on('error', function(err) {
+    console.log(err);
+});
 
 // Init App
 const app = express();
@@ -60,29 +60,6 @@ app.use("/", home);
 
 
 // Listen
-const server = app.listen(4000, function() {
+app.listen(4000, function() {
     console.log("listen in port 4000");
-});
-
-const SocketServer = require('ws').Server;
-const ws =  new SocketServer({server});
-
-const Picture = require("./DBcollection/picture.js");
-
-ws.on('connection', function(ws) {
-    var picture;
-    ws.on('message', function(msg) {
-        if (picture == undefined) {
-            Picture.findOne({name: msg}, function(err, find) {
-                if (err) return console.log(err);
-                if (find == null) return console.log("ws err");
-                picture = find;
-                ws.send(JSON.stringify(picture.danmu));
-            });
-        }
-        else {
-            picture.danmu.push(msg);
-            picture.save();
-        }
-    });
 });

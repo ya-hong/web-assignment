@@ -79,13 +79,13 @@ class Barrage {
 /********************************************/
 
 // 打开一个 web socket
-var ws = new WebSocket("ws://localhost:4000/danmu");
-
-
-// ws.binaryType="arraybuffer";
+var ws = new WebSocket("ws://192.168.0.102:4000/danmu/1");
 
 ws.onopen = function() {
     // Web Socket 已连接上，使用 send() 方法发送数据
+
+    console.log('ws open');
+
     var fileName = $('#pictureName').attr('_name');
     ws.send(fileName);
 };

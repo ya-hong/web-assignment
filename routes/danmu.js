@@ -3,6 +3,8 @@ const path = require('path');
 const fs = require('fs');
 const router= express.Router();
 
+const SocketServer = require('express-ws')(router);
+
 const Picture = require('../DBcollection/picture.js');
 
 const basepath = path.join(__dirname, "../public/pictures");
@@ -26,7 +28,26 @@ router.get('/:picture', function(req, res) {
             user: req.session.user
         })
     })
+});
 
+// WebSocket
+router.ws('/1', function(ws, req) {
+    var picture;
+    ws.on('message', function(msg) {
+        console.log('ws connected');
+        if (picture == undefined) {
+            Picture.findOne({name: msg}, function(err, find) {
+                if (err) return console.log(err);
+                if (find == null) return console.log("ws err");
+                picture = find;
+                ws.send(JSON.stringify(picture.danmu));
+            });
+        }
+        else {
+            picture.danmu.push(msg);
+            picture.save();
+        }
+    });
 });
 
 router.get('/', function(req, res) {

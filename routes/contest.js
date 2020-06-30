@@ -94,7 +94,7 @@ router.post('/add/tasks/:id', function(req, res) {
         if (contest.tasks == undefined) {
             contest.tasks = [];
         }
-        console.log(req.body);
+        // console.log(req.body);
 
         let task = {
             name : req.body.name,
@@ -138,7 +138,7 @@ router.post('/add/tasks/:id', function(req, res) {
         }
         else task.D.ans = false;
 
-        console.log(task);
+        // console.log(task);
         contest.tasks.push(task);
         contest.save(function(err) {
             if (err) {
@@ -194,7 +194,7 @@ router.post('/tasks/:id', function(req, res) {
         user: userid,
         contest: contestid
     }, function(err, score) {
-        console.log(score);
+        // console.log(score);
         if (score) {
             res.redirect('/contest');
         }
@@ -259,7 +259,7 @@ router.get('/chart/:id', function(req, res) {
                 if (obj[score.score]) obj[score.score]++;
                 else obj[score.score] = 1;
             });
-            console.log(obj);
+            // console.log(obj);
             var data = [];
             for (var name in obj) {
                 data.push({
@@ -267,7 +267,7 @@ router.get('/chart/:id', function(req, res) {
                     value: obj[name]
                 })
             }
-            console.log(data);
+            // console.log(data);
             res.render('contest-chart-tasks', {
                 title: '查看考试分数分布',
                 user: req.session.user,

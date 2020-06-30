@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const formidable = require('formidable');
 
-var download = function(filePath, res, callback) {
+var download = function(filePath, res) {
     while (filePath[filePath.length - 1] == '/') {
         filePath= filePath.substr(0, filePath.length - 1);
     }
@@ -11,19 +11,21 @@ var download = function(filePath, res, callback) {
     pos++;
     var fileName = filePath.substr(pos, filePath.length - pos);
 
+    console.log(filePath);
+
     var stats = fs.statSync(filePath); 
     if(stats.isFile()){
         res.set({
             'Content-Type': 'application/octet-stream',
-            'Content-Disposition': 'attachment; filename='+fileName,
-            'Content-Length': stats.size
+            'Content-Disposition': 'attachment; filename='+encodeURI(fileName),
+            'Content-Length': stats.size,
+            'charset': 'utf-8'
         });
-        fs.createReadStream(filePath).pipe(res);
-        callback();
+        fs.createReadStream(filePath, 'utf-8').pipe(res);
+        // console.log(res);
     } 
     else {
-        res.end(404);
-        callback(err);
+        res.end('some thing wrong');
     }
 };
 
@@ -41,31 +43,27 @@ var upload = function(filePath, req, fileName, callback) {
 
         if (fileName != undefined) {
             fs.renameSync(files.resource.path, path.join(filePath, fileName));
-            if (callback) callback(err);
+            if (callback) return callback(err);
         }
         else {
-            fileName = files.resource.name;
+            fileName = (files.resource.name);
             var prefix = 0;
             while (fs.existsSync(path.join(filePath, fileName))) {
                 fileName = prefix + files.resource.name;
                 prefix++;
             }
             fs.renameSync(files.resource.path, path.join(filePath, fileName));
-            if (callback) callback(err);
+            if (callback) return callback(err);
         }
     });
 }
 
 var mkdir = function(dirPath, callback) {
     if (!fs.existsSync(dirPath)) {
-        fs.mkdirSync(dirPath, function(err) {
-            if (err) {
-                callback(err);
-            }
-            callback();
-        });
+        fs.mkdirSync(dirPath);
+        return callback();
     }
-    else callback();
+    else return callback();
 }
 
 exports.download = download;

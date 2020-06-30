@@ -25,18 +25,16 @@ router.get('/download/*', function(req, res) {
         return res.redirect('/');
     }
     var fileName = req.params[0];
-    fileName = encodeURI(fileName);
+    // fileName = encodeURI(fileName);
     var filePath = path.join(basepath, fileName);
+    console.log(filePath);
     filesys.download(filePath, res);
 });
 
 router.post('/mkdir/*', function(req, res) {
-    var prepath = path.join(encodeURI(req.params[0]));
-    var dirpath = path.join(basepath, prepath, encodeURI(req.body.dirname));
-    filesys.mkdir(dirpath, function(err) {
-        if (err) {
-            return console.log(err);
-        }
+    var prepath = path.join(req.params[0]);
+    var dirpath = (path.join(basepath, prepath, req.body.dirname));
+    filesys.mkdir(dirpath, function() {
         res.redirect('/file/' + prepath);
     });
 });
@@ -48,7 +46,7 @@ router.get('/*', function(req, res, next) {
 
     // 显示服务器文件 
     // 文件目录
-    var pth = encodeURI(req.params[0]);
+    var pth = req.params[0];
     pth = path.join(pth);
 
     while (pth[pth.length-1] == '/') {
@@ -59,6 +57,7 @@ router.get('/*', function(req, res, next) {
 
     fs.readdir(filePath, function(err, results){
         if(err) {
+            console.log(err);
             return res.end("something wrong");
         }
         var files = [], dirs = [];
