@@ -18,10 +18,11 @@
   "homepage": "https://github.com/ya-hong/web-assignment#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "bower": "^1.8.8",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "formidable": "^1.2.2",
-    "mongoose": "^5.9.20",
+    "mongoose": "^4.13.20",
     "pug": "^3.0.0",
     "ws": "^7.3.0"
   }

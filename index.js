@@ -6,17 +6,17 @@ const session = require('express-session');
 
 
 // Link Database
-mongoose.connect('mongodb://localhost/web')
+mongoose.connect('mongodb://localhost/web', {useMongoClient:true})
 let db = mongoose.connection;
 
 // Check DB errors
 
-db.once('open', function() {
-    console.log("Connected to mongoDB")
-})
-db.on('error', function(err) {
-    console.log(err);
-});
+// db.once('open', function() {
+//     console.log("Connected to mongoDB")
+// })
+// db.on('error', function(err) {
+//     console.log(err);
+// });
 
 // Init App
 const app = express();
@@ -33,14 +33,6 @@ app.use(session({    secret :  'IDontKnow', // 对session id 相关的cookie 进
    },
 }));
 
-var checker = function(req, res, callback) {
-    var user = req.session.user ;
-    if (user.type == undefined || user.type == null) {
-        console.log("you're not log in !");
-        return res.redirect('/');
-    }
-    callback(req, res);
-}
 
 // Contest
 let contest = require("./routes/contest.js");
