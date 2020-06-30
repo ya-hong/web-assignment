@@ -3,6 +3,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const session = require('express-session');
+const expressWs = require('express-ws');
 
 
 // Link Database
@@ -20,6 +21,9 @@ db.on('error', function(err) {
 
 // Init App
 const app = express();
+
+expressWs(app);
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 

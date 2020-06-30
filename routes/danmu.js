@@ -2,22 +2,19 @@ const express = require("express");
 const path = require('path'); 
 const fs = require('fs');
 const router= express.Router();
-
-const SocketServer = require('express-ws')(router);
-
+const expressWs = require('express-ws');
 const Picture = require('../DBcollection/picture.js');
 
 const basepath = path.join(__dirname, "../public/pictures");
 
+expressWs(router);
 
 router.get('/:picture', function(req, res) {
 
     if (req.session.user == undefined) {
         return res.redirect('/');
     }
-
     var fileName = req.params.picture;
-
     Picture.findOne({name: fileName}, function(err, find) {
         if (!find) return res.end("some thing wrong");
         res.render("danmu-picture", {
@@ -29,9 +26,7 @@ router.get('/:picture', function(req, res) {
         })
     })
 });
-
-// WebSocket
-router.ws('/1', function(ws, req) {
+router.ws('/:picture', function(ws, req) {
     var picture;
     ws.on('message', function(msg) {
         console.log('ws connected');
