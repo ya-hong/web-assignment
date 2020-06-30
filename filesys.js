@@ -19,9 +19,8 @@ var download = function(filePath, res) {
             'Content-Type': 'application/octet-stream',
             'Content-Disposition': 'attachment; filename='+encodeURI(fileName),
             'Content-Length': stats.size,
-            'charset': 'utf-8'
         });
-        fs.createReadStream(filePath, 'utf-8').pipe(res);
+        fs.createReadStream(filePath).pipe(res);
         // console.log(res);
     } 
     else {

@@ -118,27 +118,25 @@ router.post('/add/tasks/:id', function(req, res) {
         };
 
 
-        if (req.body.A_ans && req.body.A_ans == "on") {
+        if (req.body.A_ans == "on") {
             task.A.ans = true;
         }
         else task.A.ans = false;
-
-        if (req.body.B_ans && req.body.B_ans == "on") {
+        if (req.body.B_ans == "on") {
             task.B.ans = true;
         }
         else task.B.ans = false;
-
-        if (req.body.C_ans && req.body.C_ans == "on") {
+        if (req.body.C_ans == "on") {
             task.C.ans = true;
         }
         else task.C.ans = false;
-
-        if (req.body.D_ans && req.body.C_ans == "on") {
+        if (req.body.C_ans == "on") {
             task.D.ans = true;
         }
         else task.D.ans = false;
 
         // console.log(task);
+
         contest.tasks.push(task);
         contest.save(function(err) {
             if (err) {
@@ -205,6 +203,11 @@ router.post('/tasks/:id', function(req, res) {
                 score.contest = contestid;
                 score.score = 0;
                 for (var i = 0; i < contest.tasks.length; ++i) {
+                    // console.log(i + 'A' + ": " + req.body[i + 'A']);
+                    // console.log(i + 'B' + ": " + req.body[i + 'B']);
+                    // console.log(i + 'C' + ": " + req.body[i + 'C']);
+                    // console.log(i + 'D' + ": " + req.body[i + 'D']);
+
                     if (
                         (req.body[i + 'A'] == 'on') == contest.tasks[i].A.ans &
                         (req.body[i + 'B'] == 'on') == contest.tasks[i].B.ans &
@@ -212,6 +215,7 @@ router.post('/tasks/:id', function(req, res) {
                         (req.body[i + 'D'] == 'on') == contest.tasks[i].D.ans
                     ) {
                         score.score += contest.tasks[i].score;
+                        // console.log(i);
                     }
                 }
                 score.save(function(err) {
