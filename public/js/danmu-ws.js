@@ -79,7 +79,8 @@ class Barrage {
 /********************************************/
 
 // 打开一个 web socket
-var ws = new WebSocket("ws://localhost:4000/danmu/" + $('#pictureName').attr('_name'));
+var ip = document.location.hostname;
+var ws = new WebSocket("ws://" + ip + ":4000/danmu/" + $('#pictureName').attr('_name'));
 
 ws.onopen = function() {
     // Web Socket 已连接上，使用 send() 方法发送数据
