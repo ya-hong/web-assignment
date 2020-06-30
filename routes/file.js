@@ -10,7 +10,6 @@ const basepath = path.join(__dirname, "./..", "public", "resource");
 
 router.post('/upload/*', function(req, res){
     var prePath = req.params[0];
-    console.log(prePath);
     var filePath = path.join(basepath, prePath);
     console.log(filePath);
     filesys.upload(filePath, req, undefined, function(err) {

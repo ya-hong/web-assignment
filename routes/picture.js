@@ -22,6 +22,12 @@ router.post('/upload', function(req, res, callback){
         if (err) {
             return console.log(err);
         }
+
+        if (files.resource.type.substr(0, 5) != 'image') {
+            fs.unlinkSync(files.resource.path);
+            return res.redirect('/picture');
+        }
+
         fileName = files.resource.name;
         var newPath = path.join(form.uploadDir , fileName);
         var prefix = 0;
