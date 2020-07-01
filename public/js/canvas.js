@@ -130,7 +130,8 @@ saveButton.onclick = function() {
         cache: false,
         contentType: false,
         success: function (response) {
-            
+            main(imgPath + '/EDIT' + imgName);
+            imgObj.onload();
         },
         error: function (xhr, status, error) {
 
