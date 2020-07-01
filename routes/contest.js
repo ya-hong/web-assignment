@@ -122,15 +122,18 @@ router.post('/add/tasks/:id', function(req, res) {
             task.A.ans = true;
         }
         else task.A.ans = false;
+
         if (req.body.B_ans == "on") {
             task.B.ans = true;
         }
         else task.B.ans = false;
+
         if (req.body.C_ans == "on") {
             task.C.ans = true;
         }
         else task.C.ans = false;
-        if (req.body.C_ans == "on") {
+
+        if (req.body.D_ans == "on") {
             task.D.ans = true;
         }
         else task.D.ans = false;
