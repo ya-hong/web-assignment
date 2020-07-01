@@ -1,4 +1,4 @@
-node_modules/
-public/resource/*
-public/pictures/*
-public/bower/*
+/node_modules/
+/public/resource/
+/public/pictures/
+/public/bower/
