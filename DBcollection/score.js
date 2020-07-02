@@ -6,4 +6,4 @@ let score = mongoose.Schema({
     score: Number
 });
 
-let Score = module.exports = mongoose.model('score', score);
+let Score = module.exports = mongoose.model('scores', score);

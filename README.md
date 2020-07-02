@@ -1,79 +1,32 @@
-# web-assignment
-web 期末大作业
+# 使用方法
 
-任务进度达到 59% 之后，出现了方法上的问题和代码屎山化的问题， 总之难以继续推进。 鸽了好久终于要交作业了😨，于是现在决定从 0% 开始实现了。
++   需要 mongodb
 
-决定从头开始，一方面的原因是因为出现了难以解决的问题， 另一方面是在看了 [Traversy Media](https://www.youtube.com/watch?v=CrAU8xTHy4M&list=PLillGF-RfqbYRpji8t4SxUkMxfowG4Kqp&index=9) 的教学视频之后深感自己的愚蠢， 自己的实现方式是在是太不美观了。 既然原来的进度已经难以推进， 不如直接从头开始从新做人来的爽快。
+    ```shell
+    sudo apt install mongodb
+    ```
 
-## 打算使用的工具、模块、框架和 ？
+    然后需要配置一下mongodb. 
 
-+   express
+    需要添加 web 数据库， 再里面添加 `users`, `tasks`, `pictures`, `scores`, 四个集合
 
-    用还是要用的
++   需要 bower 来安装 bootstrap 和 jquery
 
-+   pug
-    
-    在写 layout 上面看起来比 ejs 方便多了。 终于可以少写一些又臭又长的 html 代码了。
+    ```shell
+    npm install bower 
+    bower install jquery
+    bower install bootstrap
+    ```
 
-+   mongoDB
+    这样就可以把 jquery 和 bootstrap 安装进 `/public/bower/` 目录里了
 
-    有一种和 js 融为一体的感觉。 比 mysql 高多了。
+准备工作完成后， 进行 `npm install` 安装其余模块。 
 
-+   Bootstrap & jQuery
+最后， 在 `public` 文件夹下建立 `pictures` 和 `resource` 两个文件夹。 
 
-    可以不用自己写 css 了。 说实话我也写不出来。
 
-+   Body-parser
+```shell
+node index.js
+```
 
-    检测 post 数据
-
-+   formidable
-
-    文件传输
-
-    本来感觉很麻烦的， 仔细了解了一下其实还挺好的。
-
-+   webSocket
-
-    之前没有查 webSocket 的资料， 感觉走了很多弯路啊
-
-+   ...
-
-## 功能和实现
-
-基本要求看起来还是挺好写的， 不过扩展要求应该没什么时间了。
-
-### 树莓派搭建 wifi 热点
-
-再说吧
-
-### 文件上传 & 下载
-
-已经实现了， 但是用的不是 websocket, 有时间打算修改一下
-
-### 上传 & 回答题目
-
-感觉没什么问题
-
-### 图表展示题目的回答情况
-
-还没看 Echarts 的视频
-
----
-
-### 上传图片并批注
-
-虽然已经实现了， 但还需要改进
-
-### 视频交流
-
-没什么想法
-
-### 弹幕
-
-终于好了
-
-### 人脸识别签到
-
-目前优先级最低
-
+即可启动程序
