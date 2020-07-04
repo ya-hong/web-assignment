@@ -9,6 +9,8 @@ const expressWs = require('express-ws');
 // Link Database
 mongoose.connect('mongodb://localhost/web', {useMongoClient:true})
 let db = mongoose.connection;
+mongoose.plugin(schema => { schema.options.usePushEach = true });
+
 
 // Check DB errors
 
