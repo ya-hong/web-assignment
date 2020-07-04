@@ -39,9 +39,11 @@ router.ws('/:picture', function(ws, req) {
             });
         }
         else {
-            picture.danmu.push(msg);
-            console.log(picture);
-            picture.save();
+            Picture.findOne({name: picture.name}, function(err, find) {
+                find.danmu.push(msg);
+                console.log(find);
+                find.save();
+            });
         }
     });
 });
