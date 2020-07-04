@@ -40,9 +40,10 @@ router.ws('/:picture', function(ws, req) {
         }
         else {
             Picture.findOne({name: picture.name}, function(err, find) {
-                find.danmu.push(msg);
-                console.log(find);
-                find.save();
+                find.danmu.push(msg, function() {
+                    console.log(find);
+                    find.save();
+                });
             });
         }
     });
