@@ -90,6 +90,9 @@ ws.onopen = function() {
     var fileName = $('#pictureName').attr('_name');
     ws.send(fileName);
 };
+ws.onclose = function() {
+    console.log('ws close');
+}
                 
 ws.onmessage = function (msg) { 
     var danmus = JSON.parse(msg.data);
@@ -108,6 +111,7 @@ $(document).ready(function() {
         $target = $(e.target);
         var content = $('#danmu-input').val();
         if (content == "") return;
+        console.log('ws send');
         ws.send(content);
     });
 });
