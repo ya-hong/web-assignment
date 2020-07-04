@@ -39,9 +39,12 @@ router.ws('/:picture', function(ws, req) {
             });
         }
         else {
-            Picture.update({name: picture.name}, {
-                $push: {danmu: msg}
-            });
+            picture.danmu.push(msg);
+            Picture.updateOne({name: picture.name}, picture,function(err) {
+                Picture.findOne({name: picture.name}, function(err, find) {
+                    console.log(find);
+                })
+            })
         }
     });
 });
