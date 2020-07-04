@@ -40,6 +40,7 @@ router.ws('/:picture', function(ws, req) {
         }
         else {
             picture.danmu.push(msg);
+            console.log(picture);
             picture.save();
         }
     });
